@@ -1,0 +1,332 @@
+###
+GET http://localhost:4004/odata/v4/catalog/Employees
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 1,
+    "name": "Rudra",
+    "age": 23,
+    "address": "Kolkata"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 2,
+    "name": "Rahul",
+    "age": 15,
+    "address": "Kolkata"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 3,
+    "name": "Amit",
+    "age": 65,
+    "address": "Delhi"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 4,
+    "name": "Sourav",
+    "age": 25,
+    "address": "AB"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 5,
+    "name": "Arjun",
+    "age": 25,
+    "address": null
+}
+
+
+# Declarative Constraints
+
+###
+GET http://localhost:4004/odata/v4/catalog/Employees
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 1,
+    "name": "Rudra",
+    "age": 23,
+    "email": "rudra@gmail.com",
+    "phone": "9876543210",
+    "department": "Development",
+    "salary": 50000,
+    "address": "Kolkata",
+    "status": "ACTIVE"
+}
+
+// name is missing , mandatory
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 2,
+    "age": 25,
+    "email": "rahul@gmail.com",
+    "phone": "9876543210",
+    "salary": 40000,
+    "address": "Delhi"
+}
+
+#  email mandatory
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 3,
+    "name": "Amit",
+    "age": 25,
+    "phone": "9876543210",
+    "salary": 40000,
+    "address": "Delhi"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 4,
+    "name": "Sourav",
+    "age": 25,
+    "email": "sourav@gmail.com",
+    "salary": 40000,
+    "address": "Delhi"
+}
+
+# age between 18 to 60
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 5,
+    "name": "Young User",
+    "age": 17,
+    "email": "young@gmail.com",
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": "Kolkata"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 6,
+    "name": "Old User",
+    "age": 61,
+    "email": "old@gmail.com",
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": "Kolkata"
+}
+
+# correct
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 7,
+    "name": "Boundary User",
+    "age": 18,
+    "email": "boundary18@gmail.com",
+    "phone": "9876543210",
+    "salary": 15000,
+    "address": "Kolkata"
+}
+
+
+# email format wrong 
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 9,
+    "name": "Email Test",
+    "age": 25,
+    "email": "rudra", 
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": "Kolkata"
+}
+
+# valid
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 11,
+    "name": "Email Valid",
+    "age": 25,
+    "email": "rudra.guchhait@gmail.com",
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": "Kolkata"
+}
+
+#  phone format wrong 
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 12,
+    "name": "Phone Test",
+    "age": 25,
+    "email": "phone@gmail.com",
+    "phone": "12345",
+    "salary": 30000,
+    "address": "Kolkata"
+}
+
+# correct
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 14,
+    "name": "Phone Valid",
+    "age": 25,
+    "email": "phone3@gmail.com",
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": "Kolkata"
+}
+
+# salary low 
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 15,
+    "name": "Salary Test",
+    "age": 25,
+    "email": "salary@gmail.com",
+    "phone": "9876543210",
+    "salary": 10000,
+    "address": "Kolkata"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 16,
+    "name": "Salary Test 2",
+    "age": 25,
+    "email": "salary2@gmail.com",
+    "phone": "9876543210",
+    "salary": 250000,
+    "address": "Kolkata"
+}
+
+# correct
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 17,
+    "name": "Salary Boundary",
+    "age": 25,
+    "email": "salary3@gmail.com",
+    "phone": "9876543210",
+    "salary": 15000,
+    "address": "Kolkata"
+}
+
+//address
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 18,
+    "name": "Address Test",
+    "age": 25,
+    "email": "address@gmail.com",
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": "AB"
+}
+
+# null constraint 
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 20,
+    "name": "Null Address",
+    "age": 25,
+    "email": "nulladdress@gmail.com",
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": null
+}
+
+# default 
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 21,
+    "name": "Default Test",
+    "age": 25,
+    "email": "default@gmail.com",
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": "Kolkata"
+}
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/Employees
+Content-Type: application/json
+
+{
+    "ID": 22,
+    "name": "Readonly Test",
+    "age": 25,
+    "email": "readonly@gmail.com",
+    "phone": "9876543210",
+    "salary": 30000,
+    "address": "Kolkata",
+    "createdAt": "2026-08-24T10:00:00Z",
+    "createdBy": "Rudra"
+}
+
