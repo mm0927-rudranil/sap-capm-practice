@@ -1,0 +1,6 @@
+ID,title,stock,state,price_value,price_currency,authors,ratings
+1,Wings of Fire,100,KA,450.50,INR,"[""APJ Abdul Kalam""]","[5,4,5]"
+2,The Alchemist,50,WB,399.99,INR,"[""Paulo Coelho""]","[4,5,4]"
+3,Java Programming,75,DL,599.00,INR,"[""Herbert Schildt"",""James Gosling""]","[5,5,4]"
+4,SAP CAP Guide,40,MH,799.50,INR,"[""SAP Expert"",""CAP Trainer""]","[5,4,5]"
+5,Database Systems,60,TN,650.00,INR,"[""Abraham Silberschatz"",""Henry Korth""]","[4,5,4]"

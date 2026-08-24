@@ -1,0 +1,137 @@
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+  "ID": 101,
+  "title": "Clean Code",
+  "author": "Rudranil Guchhait",
+  "stock": 2,
+  "price": 34.99
+}
+
+### Get all books
+GET http://localhost:4004/odata/v4/catalog/Books
+
+### Get single book by Key ID
+GET http://localhost:4004/odata/v4/catalog/Books(101)
+
+### Query with OData filters & sorting
+GET http://localhost:4004/odata/v4/catalog/Books?$filter=stock gt 10&$orderby=price desc
+
+
+### PATCH
+PATCH http://localhost:4004/odata/v4/catalog/Books(101)
+Content-Type: application/json
+
+{
+  "stock": 20
+}
+
+
+###
+
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+  "ID": 102,
+  "title": "BTP",
+  "author": "Ram Kumar",
+  "stock": 25,
+  "price": 50
+}
+
+###
+DELETE http://localhost:4004/odata/v4/catalog/Books(101)
+
+
+
+###
+GET http://localhost:4004/odata/v4/catalog/$metadata
+
+###
+GET http://localhost:4004/odata/v4/catalog/Books
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 2,
+    "title": "The Alchemist",
+    "stock": 50,
+    "state": "WB",
+    "price_value": 450.50,
+    "price_currency": "INR"
+}
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 3,
+    "title": "Java Programming",
+    "stock": 100,
+    "state": "WB",
+    "price_value": 599.99,
+    "price_currency": "INR",
+    "authors": [
+        "Rudranil",
+        "Amit",
+        "Sudip"
+    ]
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 4,
+    "title": "CAPM Complete Guide",
+    "stock": 20,
+    "state": "WB",
+    "price_value": 799.99,
+    "price_currency": "INR",
+    "authors": [
+        "Rudranil",
+        "Bibekh"
+    ],
+    "ratings": [
+        5,
+        4,
+        5,
+        3,
+        5
+    ]
+}
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 5,
+    "title": "Learning SAP CAP",
+    "stock": 30,
+    "state": "WB",
+    "price_value": 999.99,
+    "price_currency": "INR",
+   
+    "reviews": [
+        {
+            "userName": "Rudranil",
+            "rating": 5,
+            "comment": "Very useful book"
+        },
+        {
+            "userName": "Amit",
+            "rating": 4,
+            "comment": "Good explanation"
+        }
+    ]
+}
