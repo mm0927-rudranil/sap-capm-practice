@@ -1,0 +1,158 @@
+POST http://localhost:4004/odata/v4/employee/Employees
+Content-Type: application/json
+
+# {
+#     "ID": 1,
+#     "name": "Rudra",
+#     "email": "rudra@gmail.com",
+#     "age": 22,
+#     "department": "IT",
+#     "salary": 35000
+# }
+
+{
+    "ID": 2,
+    "name": "Rahul",
+    "email": "rahul@gmail.com",
+    "age": 24,
+    "department": "HR",
+    "salary": 40000
+}
+
+# {
+#     "ID": 3,
+#     "name": "Priya",
+#     "email": "priya@gmail.com",
+#     "age": 23,
+#     "department": "Finance",
+#     "salary": 45000
+# }
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees(1)
+
+###
+PATCH http://localhost:4004/odata/v4/employee/Employees(1)
+Content-Type: application/json
+
+{
+    "salary": 50000
+}
+###
+PUT http://localhost:4004/odata/v4/employee/Employees(1)
+Content-Type: application/json
+
+{
+    "salary": 30000
+}
+
+###
+
+DELETE http://localhost:4004/odata/v4/employee/Employees(2)
+
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=department eq 'IT'
+
+###
+PUT http://localhost:4004/odata/v4/employee/Employees(1)
+Content-Type: application/json
+
+{
+    "salary": 30000
+}
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=salary gt 40000
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=salary lt 40000
+
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=salary lt 40000
+
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=age gt 23
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=department eq 'IT' and salary gt 30000
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=department eq 'IT' or department eq 'HR'
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$select=name,email
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$orderby=salary asc
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$orderby=salary desc
+
+
+###
+GET http://localhost:4004/odata/v4/employee/Employees?$orderby=department asc,salary desc
+
+
+### Get all employees
+GET http://localhost:4004/odata/v4/employee/Employees
+
+###
+
+### Get employee by ID
+GET http://localhost:4004/odata/v4/employee/Employees(1)
+
+###
+
+### Filter by department
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=department eq 'IT'
+
+###
+
+### Filter by salary
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=salary gt 40000
+
+###
+
+### Select fields
+GET http://localhost:4004/odata/v4/employee/Employees?$select=name,email,salary
+
+###
+
+### Order by salary descending
+GET http://localhost:4004/odata/v4/employee/Employees?$orderby=salary desc
+
+###
+
+### Top 2
+GET http://localhost:4004/odata/v4/employee/Employees?$top=2
+
+###
+
+### Skip first 2
+GET http://localhost:4004/odata/v4/employee/Employees?$skip=2
+
+###
+
+### Filter + order
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=department eq 'IT'&$orderby=salary desc
+
+###
+
+### Filter + select
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=salary gt 40000&$select=name,salary
+
+###
+
+### Filter + order + top
+GET http://localhost:4004/odata/v4/employee/Employees?$filter=age gt 22&$orderby=salary desc&$top=2
+
+###
+
+### Pagination
+GET http://localhost:4004/odata/v4/employee/Employees?$skip=2&$top=2
