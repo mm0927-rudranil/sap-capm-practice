@@ -1,0 +1,63 @@
+GET http://localhost:4004/odata/v4/catalog/Books
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 2,
+    "title": "The Alchemist",
+    "price": 450,
+    "order": "P"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 1,
+    "title": "The Alchemist",
+    "price": 450,
+    "order": "P",
+    "paymentStatus": "P"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 1,
+    "title": "The Alchemist",
+    "price": 450,
+    "orderStatus": "P",
+    "paymentStatus": "P"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 4,
+    "title": "Clean Code",
+    "price": 700,
+    "orderStatus": "X",
+    "paymentStatus": "P"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "ID": 5,
+    "title": "Spring Boot",
+    "price": 800,
+    "orderStatus": "P",
+    "paymentStatus": "X"
+}
+
+###
+GET http://localhost:4004/odata/v4/catalog/Books

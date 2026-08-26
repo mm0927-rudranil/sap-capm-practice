@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ### Get all books
-GET http://localhost:4004/odata/v4/catalog/Books
+GET http://localhost:4007/odata/v4/catalog/Books
 
 ### Get single book by Key ID
 GET http://localhost:4004/odata/v4/catalog/Books(101)
