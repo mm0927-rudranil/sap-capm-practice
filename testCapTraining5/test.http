@@ -1,0 +1,504 @@
+
+# Base URL:
+# http://localhost:4004/odata/v4/shop
+
+
+
+# 01. ONE-TO-ONE ASSOCIATION
+
+
+### Create Customer
+POST http://localhost:4004/odata/v4/shop/Customers
+Content-Type: application/json
+
+{
+    "ID": 1,
+    "name": "Rudra"
+}
+
+
+### Create Customer Profile
+POST http://localhost:4004/odata/v4/shop/CustomerProfiles
+Content-Type: application/json
+
+{
+    "ID": 101,
+    "phone": "9876543210",
+    "city": "Kolkata"
+}
+
+### Connect Customer 1 to Profile 101
+
+PATCH http://localhost:4004/odata/v4/shop/Customers(1)
+Content-Type: application/json
+
+{
+    "profile_ID": 101
+}
+
+
+### Get Customer
+GET http://localhost:4004/odata/v4/shop/Customers(1)
+
+
+### Get Customer Profile
+GET http://localhost:4004/odata/v4/shop/CustomerProfiles(101)
+
+
+### Expand Profile
+GET http://localhost:4004/odata/v4/shop/Customers(1)?$expand=profile
+
+###
+PATCH http://localhost:4004/odata/v4/shop/CustomerProfiles(101)
+Content-Type: application/json
+
+{
+    "customer_ID": 1
+}
+
+###
+GET http://localhost:4004/odata/v4/shop/CustomerProfiles(101)?$expand=customer
+
+
+
+# 02. ONE-TO-MANY ASSOCIATION
+
+
+### Create another Customer
+POST http://localhost:4004/odata/v4/shop/Customers
+Content-Type: application/json
+
+{
+    "ID": 2,
+    "name": "Rahul"
+}
+
+
+### Create Order 201
+POST http://localhost:4004/odata/v4/shop/Orders
+Content-Type: application/json
+
+{
+    "ID": 204,
+    "customer_ID": 2,
+    "orderDate": "2026-08-26",
+    "totalAmount": 50000
+}
+
+
+### Create Order 202
+POST http://localhost:4004/odata/v4/shop/Orders
+Content-Type: application/json
+
+{
+    "ID": 205,
+    "orderDate": "2026-08-27",
+    "customer_ID": 2,
+    "totalAmount": 25000
+}
+
+###
+POST http://localhost:4004/odata/v4/shop/Orders
+Content-Type: application/json
+
+{
+    "ID": 203,
+    "customer_ID": 2,
+    "orderDate": "2026-08-28",
+    "totalAmount": 30000
+}
+
+
+
+### Get all Orders
+GET http://localhost:4004/odata/v4/shop/Orders
+
+
+### Get Customer with Orders
+GET http://localhost:4004/odata/v4/shop/Customers(2)?$expand=orders
+
+
+
+# 03. COMPOSITION
+
+
+
+
+### Product 1
+POST http://localhost:4004/odata/v4/shop/Products
+Content-Type: application/json
+
+{
+    "ID": 1,
+    "name": "Laptop",
+    "price": 50000,
+    "stock": 10
+}
+
+### Product 2
+POST http://localhost:4004/odata/v4/shop/Products
+Content-Type: application/json
+
+{
+    "ID": 2,
+    "name": "Mouse",
+    "price": 1500,
+    "stock": 50
+}
+
+###
+### Create Keyboard
+POST http://localhost:4004/odata/v4/shop/Products
+Content-Type: application/json
+
+{
+    "ID": 3,
+    "name": "Keyboard",
+    "price": 3000,
+    "stock": 15
+}
+
+### Create Order
+POST http://localhost:4004/odata/v4/shop/Orders
+Content-Type: application/json
+
+{
+    "ID": 301,
+    "orderDate": "2026-08-26",
+    "totalAmount": 53000
+}
+
+### Order Item 3011
+POST http://localhost:4004/odata/v4/shop/OrderItems
+Content-Type: application/json
+
+{
+    "ID": 3011,
+    "product_ID": 1,
+    "quantity": 1,
+    "price": 50000,
+    "order_ID": 301
+}
+
+
+### Order Item 3012
+POST http://localhost:4004/odata/v4/shop/OrderItems
+Content-Type: application/json
+
+{
+    "ID": 3012,
+    "product_ID": 2,
+    "quantity": 2,
+    "price": 1500,
+    "order_ID": 301
+}
+
+###
+PATCH http://localhost:4004/odata/v4/shop/Orders(301)
+Content-Type: application/json
+
+{
+    "customer_ID": 1
+}
+
+
+### Get Order
+GET http://localhost:4004/odata/v4/shop/Orders(301)
+
+
+### Get Order with Items
+GET http://localhost:4004/odata/v4/shop/Orders(301)?$expand=items
+
+###
+GET http://localhost:4004/odata/v4/shop/Orders(301)?$expand=customer,items($expand=product)
+
+
+# 04. DEEP INSERT
+
+
+### Create Order + Items in ONE request
+POST http://localhost:4004/odata/v4/shop/Orders
+Content-Type: application/json
+
+{
+    "ID": 500,
+    "customer_ID": 1,
+    "orderDate": "2026-08-26",
+    "totalAmount": 56000,
+    "items": [
+        {
+            "ID": 5001,
+            "product_ID": 1,
+            "quantity": 1,
+            "price": 50000
+        },
+        {
+            "ID": 5002,
+            "product_ID": 2,
+            "quantity": 2,
+            "price": 1500
+        },
+        {
+            "ID": 5003,
+            "product_ID": 3,
+            "quantity": 1,
+            "price": 3000
+        }
+    ]
+}
+
+
+### Check Deep Insert
+GET http://localhost:4004/odata/v4/shop/Orders(500)?$expand=items
+
+
+# 05. DEEP DELETE / COMPOSITION DELETE
+
+
+### Check Items before deleting parent
+GET http://localhost:4004/odata/v4/shop/OrderItems(5001)
+
+### Check another child
+GET http://localhost:4004/odata/v4/shop/OrderItems(5002)
+
+
+### Delete Parent Order
+DELETE http://localhost:4004/odata/v4/shop/Orders(500)
+
+
+### Check Child after deleting Parent
+GET http://localhost:4004/odata/v4/shop/OrderItems(5001)
+
+
+### Check another Child
+GET http://localhost:4004/odata/v4/shop/OrderItems(5002)
+
+
+# 06. PRODUCT ASSOCIATION
+
+
+### Get Products
+GET http://localhost:4004/odata/v4/shop/Products
+
+
+### Create Order Item
+POST http://localhost:4004/odata/v4/shop/OrderItems
+Content-Type: application/json
+
+{
+    "ID": 601,
+    "quantity": 2,
+    "price": 1000,
+    "order_ID": 400,
+    "product_ID": 1
+}
+
+
+### Get Order Item
+GET http://localhost:4004/odata/v4/shop/OrderItems(601)
+
+
+### Expand Product
+GET http://localhost:4004/odata/v4/shop/OrderItems(601)?$expand=product
+
+
+
+# 07. MANY-TO-MANY
+
+
+### Create Student 1
+POST http://localhost:4004/odata/v4/shop/Students
+Content-Type: application/json
+
+{
+    "ID": 701,
+    "name": "Rudra"
+}
+
+
+### Create Student 2
+POST http://localhost:4004/odata/v4/shop/Students
+Content-Type: application/json
+
+{
+    "ID": 702,
+    "name": "Rahul"
+}
+
+
+### Create Course 1
+POST http://localhost:4004/odata/v4/shop/Courses
+Content-Type: application/json
+
+{
+    "ID": 801,
+    "name": "SAP CAPM"
+}
+
+
+### Create Course 2
+POST http://localhost:4004/odata/v4/shop/Courses
+Content-Type: application/json
+
+{
+    "ID": 802,
+    "name": "SAP HANA"
+}
+
+
+### Rudra -> SAP CAPM
+POST http://localhost:4004/odata/v4/shop/Enrollments
+Content-Type: application/json
+
+{
+    "ID": 902,
+    "student_ID": 701,
+    "course_ID": 801,
+    "enrollmentDate": "2026-08-27"
+}
+
+
+### Rahul -> SAP HANA
+POST http://localhost:4004/odata/v4/shop/Enrollments
+Content-Type: application/json
+
+{
+    "ID": 903,
+    "student_ID": 702,
+    "course_ID": 802,
+    "enrollmentDate": "2026-08-27"
+}
+
+
+### Student 702 -> Course 801
+POST http://localhost:4004/odata/v4/shop/Enrollments
+Content-Type: application/json
+
+{
+    "ID": 903,
+    "student_ID": 702,
+    "course_ID": 801,
+    "enrollmentDate": "2026-08-27"
+}
+
+
+### Get Students
+GET http://localhost:4004/odata/v4/shop/Students
+
+
+### Get Courses
+GET http://localhost:4004/odata/v4/shop/Courses
+
+
+### Get Enrollments
+GET http://localhost:4004/odata/v4/shop/Enrollments
+
+
+### Students with Enrollments
+GET http://localhost:4004/odata/v4/shop/Students?$expand=enrollments
+
+
+### Courses with Enrollments
+GET http://localhost:4004/odata/v4/shop/Courses?$expand=enrollments
+
+
+
+# 08. NESTED EXPAND
+
+
+### Orders -> Items -> Product
+GET http://localhost:4004/odata/v4/shop/Orders?$expand=items($expand=product)
+
+
+
+# 09. SELECT + EXPAND
+
+
+### Select specific Order fields + Item fields
+GET http://localhost:4004/odata/v4/shop/Orders?$select=ID,totalAmount&$expand=items($select=ID,quantity)
+
+
+
+# 10. FILTER + EXPAND
+
+
+### Orders greater than 30000
+GET http://localhost:4004/odata/v4/shop/Orders?$filter=totalAmount gt 30000&$expand=items
+
+
+
+# 11. ORDERBY
+
+
+### Sort Orders by totalAmount
+GET http://localhost:4004/odata/v4/shop/Orders?$orderby=totalAmount desc
+
+
+
+# 12. TOP
+
+
+### Get only first 2 Orders
+GET http://localhost:4004/odata/v4/shop/Orders?$top=2
+
+
+
+# 13. SKIP
+
+
+### Skip first Order
+GET http://localhost:4004/odata/v4/shop/Orders?$skip=1
+
+
+
+### 14. SELECT + FILTER + ORDERBY
+
+
+GET http://localhost:4004/odata/v4/shop/Orders?$select=ID,totalAmount&$filter=totalAmount gt 30000&$orderby=totalAmount desc
+
+
+
+# 15. DEEP UPDATE
+
+
+### Update Order
+PATCH http://localhost:4004/odata/v4/shop/Orders(301)
+Content-Type: application/json
+
+{
+    "totalAmount": 60000
+}
+
+
+### Check updated Order
+GET http://localhost:4004/odata/v4/shop/Orders(301)
+
+
+
+# 16. UPDATE CHILD
+
+
+### Update Order Item
+PATCH http://localhost:4004/odata/v4/shop/OrderItems(3011)
+Content-Type: application/json
+
+{
+    "quantity": 2,
+    "price": 48000
+}
+
+
+### Check Item
+GET http://localhost:4004/odata/v4/shop/OrderItems(3011)
+
+
+
+# 17. DELETE CHILD
+
+
+### Delete Order Item
+DELETE http://localhost:4004/odata/v4/shop/OrderItems(3012)
+
+
+### Verify
+GET http://localhost:4004/odata/v4/shop/OrderItems(3012)
