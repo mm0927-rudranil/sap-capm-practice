@@ -1,0 +1,490 @@
+############################################################
+# CAP CDS VIEWS PRACTICE
+############################################################
+
+@host = http://localhost:4004/odata/v4/views
+
+
+############################################################
+# 00. CREATE MASTER DATA
+############################################################
+
+
+### Create Customer 1
+POST {{host}}/Customers
+Content-Type: application/json
+
+{
+    "ID": 1,
+    "name": "Rudra",
+    "city": "Kolkata",
+    "country": "India"
+}
+
+
+### Create Customer 2
+POST {{host}}/Customers
+Content-Type: application/json
+
+{
+    "ID": 2,
+    "name": "Rahul",
+    "city": "Delhi",
+    "country": "India"
+}
+
+
+### Create Customer 3
+POST {{host}}/Customers
+Content-Type: application/json
+
+{
+    "ID": 3,
+    "name": "Priya",
+    "city": "Mumbai",
+    "country": "India"
+}
+
+
+### Create Customer 4
+POST {{host}}/Customers
+Content-Type: application/json
+
+{
+    "ID": 4,
+    "name": "John",
+    "city": "New York",
+    "country": "USA"
+}
+
+
+
+############################################################
+# 01. CREATE ORDERS
+############################################################
+
+
+### Order 101 - Rudra - Completed
+POST {{host}}/Orders
+Content-Type: application/json
+
+{
+    "ID": 101,
+    "orderDate": "2026-08-20",
+    "totalAmount": 50000,
+    "status": "Completed",
+    "customer_ID": 1
+}
+
+
+### Order 102 - Rudra - Pending
+POST {{host}}/Orders
+Content-Type: application/json
+
+{
+    "ID": 102,
+    "orderDate": "2026-08-21",
+    "totalAmount": 25000,
+    "status": "Pending",
+    "customer_ID": 1
+}
+
+
+### Order 103 - Rudra - Pending
+POST {{host}}/Orders
+Content-Type: application/json
+
+{
+    "ID": 103,
+    "orderDate": "2026-08-22",
+    "totalAmount": 15000,
+    "status": "Pending",
+    "customer_ID": 1
+}
+
+
+### Order 201 - Rahul - Completed
+POST {{host}}/Orders
+Content-Type: application/json
+
+{
+    "ID": 201,
+    "orderDate": "2026-08-23",
+    "totalAmount": 40000,
+    "status": "Completed",
+    "customer_ID": 2
+}
+
+
+### Order 202 - Rahul - Pending
+POST {{host}}/Orders
+Content-Type: application/json
+
+{
+    "ID": 202,
+    "orderDate": "2026-08-24",
+    "totalAmount": 10000,
+    "status": "Pending",
+    "customer_ID": 2
+}
+
+
+### Order 301 - Priya - Completed
+POST {{host}}/Orders
+Content-Type: application/json
+
+{
+    "ID": 301,
+    "orderDate": "2026-08-25",
+    "totalAmount": 75000,
+    "status": "Completed",
+    "customer_ID": 3
+}
+
+
+### Order 302 - Priya - Completed
+POST {{host}}/Orders
+Content-Type: application/json
+
+{
+    "ID": 302,
+    "orderDate": "2026-08-26",
+    "totalAmount": 30000,
+    "status": "Completed",
+    "customer_ID": 3
+}
+
+
+### Order 401 - John - Pending
+POST {{host}}/Orders
+Content-Type: application/json
+
+{
+    "ID": 401,
+    "orderDate": "2026-08-26",
+    "totalAmount": 60000,
+    "status": "Pending",
+    "customer_ID": 4
+}
+
+
+
+############################################################
+# 02. BASE ENTITIES
+############################################################
+
+
+### Get all Customers
+GET {{host}}/Customers
+
+
+### Get Customer 1
+GET {{host}}/Customers(1)
+
+
+### Get all Orders
+GET {{host}}/Orders
+
+
+### Get Order 101
+GET {{host}}/Orders(101)
+
+
+
+############################################################
+# 03. VIEW 1 - BASIC VIEW
+############################################################
+
+# Expected:
+# ID
+# name
+# country
+#
+# city should NOT appear
+
+
+### CustomerBasicView
+GET {{host}}/CustomerBasicView
+
+
+
+############################################################
+# 04. VIEW 2 - CALCULATED FIELD
+############################################################
+
+# Expected:
+#
+# Rudra - Kolkata, India
+# Rahul - Delhi, India
+# Priya - Mumbai, India
+# John - New York, USA
+
+
+### CustomerDisplay
+GET {{host}}/CustomerDisplay
+
+
+
+############################################################
+# 05. VIEW 3 - ORDER LIST
+############################################################
+
+# Expected:
+#
+# ID
+# orderDate
+# totalAmount
+# status
+# customerName
+# customerCountry
+
+
+### OrderList
+GET {{host}}/OrderList
+
+
+
+############################################################
+# 06. VIEW 4 - CUSTOMER ORDER STATISTICS
+############################################################
+
+# Expected approximately:
+#
+# Rudra  -> 3 orders -> 90000
+# Rahul  -> 2 orders -> 50000
+# Priya  -> 2 orders -> 105000
+# John   -> 1 order  -> 60000
+
+
+### CustomerOrderStats
+GET {{host}}/CustomerOrderStats
+
+
+
+############################################################
+# 07. VIEW 5 - PENDING ORDERS
+############################################################
+
+# Expected:
+#
+# 102
+# 103
+# 202
+# 401
+
+
+### PendingOrders
+GET {{host}}/PendingOrders
+
+
+
+############################################################
+# 08. ODATA FILTER
+############################################################
+
+
+### Filter Customers by Country
+# GET {{host}}/Customers?$filter=country eq 'India'
+
+%20 = space
+%27 = '
+
+GET {{host}}/Customers?$filter=country%20eq%20%27India%27
+
+
+### Filter Orders by Status
+GET {{host}}/Orders?$filter=status%20eq%20'PENDING'
+
+
+### Filter Orders greater than 30000
+GET {{host}}/Orders?$filter=totalAmount%20gt%2030000
+
+
+### Filter Orders between amounts
+GET {{host}}/Orders?$filter=totalAmount%20ge%2020000%20and%20totalAmount%20le%2060000
+
+
+
+############################################################
+# 09. ODATA SELECT
+############################################################
+
+
+### Select only Customer ID and Name
+GET {{host}}/Customers?$select=ID,name
+
+
+### Select only Order ID and Amount
+GET {{host}}/Orders?$select=ID,totalAmount
+
+
+### Select selected fields from View
+GET {{host}}/OrderList?$select=ID,customerName,totalAmount
+
+
+
+############################################################
+# 10. ODATA ORDERBY
+############################################################
+
+
+### Orders - lowest amount first
+GET {{host}}/Orders?$orderby=totalAmount asc
+
+
+### Orders - highest amount first
+GET {{host}}/Orders?$orderby=totalAmount desc
+
+
+### Customers - name ascending
+GET {{host}}/Customers?$orderby=name asc
+
+
+
+############################################################
+# 11. ODATA TOP
+############################################################
+
+
+### Get first 3 Customers
+GET {{host}}/Customers?$top=3
+
+
+### Get first 5 Orders
+GET {{host}}/Orders?$top=5
+
+
+
+############################################################
+# 12. ODATA SKIP
+############################################################
+
+
+### Skip first 2 Customers
+GET {{host}}/Customers?$skip=2
+
+
+### Skip first 3 Orders
+GET {{host}}/Orders?$skip=3
+
+
+
+############################################################
+# 13. TOP + SKIP
+############################################################
+
+
+### Pagination
+GET {{host}}/Orders?$skip=2&$top=3
+
+
+
+############################################################
+# 14. FILTER + SELECT
+############################################################
+
+
+### Indian Customers - only ID and Name
+GET {{host}}/Customers?$filter=country%20eq%20'India'&$select=ID,name
+
+
+### Pending Orders - selected fields
+GET {{host}}/Orders?$filter=status%20eq%20'PENDING'&$select=ID,totalAmount
+
+
+
+############################################################
+# 15. FILTER + ORDERBY
+############################################################
+
+
+### Pending Orders sorted by amount
+GET {{host}}/Orders?$filter=status%20eq%20'Pending'&$orderby=totalAmount desc
+
+
+
+############################################################
+# 16. FILTER + SELECT + ORDERBY
+############################################################
+
+
+### Combined query
+GET {{host}}/Orders?$filter=totalAmount%20gt%2020000&$select=ID,totalAmount,status&$orderby=totalAmount desc
+
+
+
+############################################################
+# 17. ASSOCIATION EXPAND
+############################################################
+
+
+### Orders with Customer
+GET {{host}}/Orders?$expand=customer
+
+
+### Specific Order with Customer
+GET {{host}}/Orders(101)?$expand=customer
+
+
+
+############################################################
+# 18. EXPAND + SELECT
+############################################################
+
+
+### Orders with selected Customer fields
+GET {{host}}/Orders?$select=ID,totalAmount,status&$expand=customer($select=ID,name,country)
+
+
+
+############################################################
+# 19. VIEW + FILTER
+############################################################
+
+
+### PendingOrders above 20000
+GET {{host}}/PendingOrders?$filter=totalAmount%20gt%2020000
+
+
+### OrderList for India
+GET {{host}}/OrderList?$filter=customerCountry%20eq%20'India'
+
+
+### OrderList sorted by amount
+GET {{host}}/OrderList?$orderby=totalAmount%20desc
+
+
+
+############################################################
+# 20. AGGREGATION VIEW FILTER
+############################################################
+
+
+### Customers with total spent greater than 60000
+GET {{host}}/CustomerOrderStats?$filter=totalSpent%20gt%2060000
+
+
+### Sort customers by total spending
+GET {{host}}/CustomerOrderStats?$orderby=totalSpent%20desc
+
+
+
+############################################################
+# 21. COMBINED PRACTICE
+############################################################
+
+
+### Top 3 expensive orders
+GET {{host}}/OrderList?$select=ID,customerName,totalAmount&$orderby=totalAmount%20desc&$top=3
+
+
+### Pending orders sorted by amount
+GET {{host}}/PendingOrders?$orderby=totalAmount%20desc
+
+
+### Indian orders above 20000
+GET {{host}}/OrderList?$filter=customerCountry%20eq%20'India' and totalAmount gt 20000&$select=ID,customerName,totalAmount
+
+
+### First 2 Indian orders after skipping 1
+GET {{host}}/OrderList?$filter=customerCountry%20eq%20'India'&$skip=1&$top=2
